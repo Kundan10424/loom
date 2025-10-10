@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Mode */
+  --navbar-bg: #3b82f6;   /* Bright cyan-blue navbar */
+  --page-bg: #eff6ff;     /* Light cyan page background */
+  --card-bg: #f8fafc;     /* Very soft off-white card */
+  --text-color: #1e293b;  /* Dark slate text */
+}
+
+.dark {
+  /* Dark Mode */
+  --navbar-bg: #0ea5e9;   /* Deep blue navbar */
+  --page-bg: #0f172a;     /* Dark navy page background */
+  --card-bg: #1e293b;     /* Dark card background */
+  --text-color: #f1f5f9;  /* Off-white text */
+}
+
+/* Apply font color globally */
+body {
+  color: var(--text-color);
+}
