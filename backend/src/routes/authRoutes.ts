@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { signup, login, logout } from '../controllers/authController';
 import { signupValidation, loginValidation } from '../middleware/authMiddleware';
 import passport from 'passport';
+import {isAuthenticated} from '../middleware/authGuard';
 
 const router = Router();
 
@@ -39,5 +40,12 @@ router.get('/github/callback',
         res.redirect(`${process.env.CLIENT_URL}/dashboard`);
     }
 )
+
+router.get('/check', isAuthenticated, (req, res) => {
+    res.status(200).json({
+        success: true,
+        user: req.user,
+        message: 'Authenticated' });
+})
 
 export default router;

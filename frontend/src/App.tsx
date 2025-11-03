@@ -1,12 +1,41 @@
-// App.tsx (example using react-router v6)
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/PrtectedRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function App() {
+function App() {
   return (
-    <Routes>
-      <Route path="/" element={<AuthPage />} />
-      {/* other routes */}
+    <>
+      <Routes>
+      <Route path="/" element={<Navigate to="/auth" />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
+
+    <ToastContainer
+    position="top-right"
+    autoClose={2000}
+    hideProgressBar={true}
+    newestOnTop={false}
+    closeOnClick
+    pauseOnHover
+    draggable
+    theme="colored"
+    />
+    </>
+
+    
+
   );
 }
+
+export default App;
