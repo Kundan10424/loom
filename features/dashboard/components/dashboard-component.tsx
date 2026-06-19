@@ -1,7 +1,6 @@
+"use client";
 
-"use client"
-
-import { 
+import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
@@ -13,8 +12,9 @@ import {
   SidebarGroupAction,
   SidebarGroupContent,
   SidebarFooter,
-  SidebarRail
-} from '@/components/ui/sidebar';
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import UserProfileDialog from "../../auth/components/user-profile-dialog";
 import {
   Zap,
   Lightbulb,
@@ -46,19 +46,18 @@ import {
   History,
   FolderPlus,
   Settings2,
-  LucideIcon
-} from "lucide-react"
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { useState } from 'react'
+  LucideIcon,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 
-
-interface PlaygroundDataProps{
-    id: string;
-    name: string;
-    icon: string;
-    starred: boolean;
+interface PlaygroundDataProps {
+  id: string;
+  name: string;
+  icon: string;
+  starred: boolean;
 }
 
 const lucideIconMap: Record<string, LucideIcon> = {
@@ -85,37 +84,44 @@ const lucideIconMap: Record<string, LucideIcon> = {
   Container,
   FileCode,
   Package,
-  Globe
-}
+  Globe,
+};
 
-const DashboardSidebar = ({initialPlaygroundData}:{initialPlaygroundData: PlaygroundDataProps[]}) => {
-
-  const pathname = usePathname()
-  const[starredPlaygrounds, setStarredPlaygrounds] = useState(initialPlaygroundData.filter((p) => p.starred))
-  const[recentPlaygrounds, setRecentPlaygrounds] = useState(initialPlaygroundData)
-
-
+const DashboardSidebar = ({
+  initialPlaygroundData,
+}: {
+  initialPlaygroundData: PlaygroundDataProps[];
+}) => {
+  const pathname = usePathname();
+  const [starredPlaygrounds, setStarredPlaygrounds] = useState(
+    initialPlaygroundData.filter((p) => p.starred),
+  );
+  const [recentPlaygrounds, setRecentPlaygrounds] = useState(
+    initialPlaygroundData,
+  );
 
   return (
-    <Sidebar 
-    variant='inset'
-    collapsible='icon'
-    className="border border-r">
+    <Sidebar variant="inset" collapsible="icon" className="border border-r">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-3 justify-center">
-          <Image src="./logo.svg" alt='logo' height={60} width={60}/>
+          <Image src="./logo.svg" alt="logo" height={60} width={60} />
         </div>
       </SidebarHeader>
 
-{/* Home */}
+      {/* Home */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === "/"} tooltip={"Home"} title='home'>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/"}
+                tooltip={"Home"}
+                title="home"
+              >
                 <Link href={"/"}>
-                <Home className='size-4'/>
-                <span>Home</span>
+                  <Home className="size-4" />
+                  <span>Home</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -126,71 +132,40 @@ const DashboardSidebar = ({initialPlaygroundData}:{initialPlaygroundData: Playgr
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === "/dashboard"} tooltip={"Dashboard"} title='dashboard'>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/dashboard"}
+                tooltip={"Dashboard"}
+                title="dashboard"
+              >
                 <Link href="/dashboard">
-                <LayoutDashboardIcon className='size-4'/>
-                <span>DashBoard</span>
+                  <LayoutDashboardIcon className="size-4" />
+                  <span>DashBoard</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
 
-{/* sttared */}
+        {/* sttared */}
         <SidebarGroup>
           <SidebarGroupLabel>
-            <Star className='size-4 mr-2'/>
+            <Star className="size-4 mr-2" />
             <span>Starred</span>
           </SidebarGroupLabel>
           <SidebarGroupAction title="Add new Playground">
-            <PlusCircleIcon className='size-4'/>
+            <PlusCircleIcon className="size-4" />
           </SidebarGroupAction>
 
           <SidebarGroupContent>
             <SidebarMenu>
-              {
-                starredPlaygrounds.length == 0 && recentPlaygrounds.length ==0 ? 
-                (
-                  <div className="text-center text-muted-foreground py-4 w-full">
-                    Create Your PlayGround
-                  </div>
-                ) : (
-                  starredPlaygrounds.map((playground) => {
-                    const IconComponent = lucideIconMap[playground.icon] || Code2
-                    return(
-                      <SidebarMenuItem key={playground.id}>
-                        <SidebarMenuButton
-                        asChild
-                        isActive={pathname === `/playground/${playground.id}`}
-                        tooltip={playground.name}>
-                          <Link href={`/playground/${playground.id}`}>
-                          {IconComponent && <IconComponent className='size-4'/>}
-                            <span>{playground.name}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    )
-                  })
-                )
-              }
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* History/Recent */}
-
-         <SidebarGroup>
-          <SidebarGroupLabel>
-            <History className="h-4 w-4 mr-2" />
-            <span>Recent</span>
-          </SidebarGroupLabel>
-          <SidebarGroupAction title="View All">
-            <FolderPlus className="h-4 w-4" />
-          </SidebarGroupAction>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {starredPlaygrounds.length === 0 && recentPlaygrounds.length === 0 ? null : (
-                recentPlaygrounds.map((playground) => {
+              {starredPlaygrounds.length == 0 &&
+              recentPlaygrounds.length == 0 ? (
+                <div className="text-center text-muted-foreground py-4 w-full">
+                  Create Your PlayGround
+                </div>
+              ) : (
+                starredPlaygrounds.map((playground) => {
                   const IconComponent = lucideIconMap[playground.icon] || Code2;
                   return (
                     <SidebarMenuItem key={playground.id}>
@@ -200,7 +175,9 @@ const DashboardSidebar = ({initialPlaygroundData}:{initialPlaygroundData: Playgr
                         tooltip={playground.name}
                       >
                         <Link href={`/playground/${playground.id}`}>
-                          {IconComponent && <IconComponent className="h-4 w-4" />}
+                          {IconComponent && (
+                            <IconComponent className="size-4" />
+                          )}
                           <span>{playground.name}</span>
                         </Link>
                       </SidebarMenuButton>
@@ -208,18 +185,56 @@ const DashboardSidebar = ({initialPlaygroundData}:{initialPlaygroundData: Playgr
                   );
                 })
               )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* History/Recent */}
+
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            <History className="h-4 w-4 mr-2" />
+            <span>Recent</span>
+          </SidebarGroupLabel>
+          <SidebarGroupAction title="View All">
+            <FolderPlus className="h-4 w-4" />
+          </SidebarGroupAction>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {starredPlaygrounds.length === 0 && recentPlaygrounds.length === 0
+                ? null
+                : recentPlaygrounds.map((playground) => {
+                    const IconComponent =
+                      lucideIconMap[playground.icon] || Code2;
+                    return (
+                      <SidebarMenuItem key={playground.id}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={pathname === `/playground/${playground.id}`}
+                          tooltip={playground.name}
+                        >
+                          <Link href={`/playground/${playground.id}`}>
+                            {IconComponent && (
+                              <IconComponent className="h-4 w-4" />
+                            )}
+                            <span>{playground.name}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="View all">
                   <Link href="/playgrounds">
-                    <span className="text-sm text-muted-foreground">View all playgrounds</span>
+                    <span className="text-sm text-muted-foreground">
+                      View all playgrounds
+                    </span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-
       </SidebarContent>
 
       {/* footer */}
@@ -227,21 +242,23 @@ const DashboardSidebar = ({initialPlaygroundData}:{initialPlaygroundData: Playgr
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-            asChild
-            tooltip={"Settings"}>
-              <Link href="/settings">
-                <Settings2 className='h-4 w-4'/>
-                <span>Settings</span>
-              </Link>
-            </SidebarMenuButton>
+            <div className="flex items-center justify-between px-2 py-2">
+              <SidebarMenuButton asChild tooltip={"Settings"}>
+                <Link href="/settings">
+                  <Settings2 className="h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </SidebarMenuButton>
+              <div className="ml-2">
+                <UserProfileDialog />
+              </div>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-      <SidebarRail/>
-
+      <SidebarRail />
     </Sidebar>
-  )
-}
+  );
+};
 
-export default DashboardSidebar
+export default DashboardSidebar;

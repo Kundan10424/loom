@@ -1,16 +1,15 @@
-import { Button } from '@/components/ui/button';
 import {
-deleteProjectById,
-duplicateProjectById,
-editProjectById,
-getAllPlayground,
-} from '@/features/dashboard/actions';
-import AddNewButton from '@/features/dashboard/components/add-new-button'
-import AddRepoButton from '@/features/dashboard/components/add-repo-button'
-import ProjectTable from '@/features/dashboard/components/project-table';
-import Image from 'next/image';
+  deleteProjectById,
+  duplicateProjectById,
+  editProjectById,
+  getAllPlayground,
+} from "@/features/dashboard/actions";
+import AddNewButton from "@/features/dashboard/components/add-new-button";
+import AddRepoButton from "@/features/dashboard/components/add-repo-button";
+import ProjectTable from "@/features/dashboard/components/project-table";
+import Image from "next/image";
 
-interface Props{
+interface Props {
   title: string;
   description: string;
   imageSrc: string;
@@ -49,8 +48,7 @@ const Page = async () => {
       <div className="flex flex-1 justify-center">
         <div className="w-full max-w-4xl px-4">
           {playgrounds.length === 0 ? (
-           
-           <EmptyState
+            <EmptyState
               title="No projects found"
               description="Create your first project or open a repository."
               imageSrc="/empty-state.svg"

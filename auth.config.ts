@@ -8,6 +8,14 @@ export default {
     Github({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name,
+          email: profile.email,
+          image: profile.avatar_url, // GitHub avatar
+        };
+      },
     }),
     Google({
       clientId: process.env.GOOGLE_ID,
@@ -17,7 +25,7 @@ export default {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
-          image: profile.picture, // 🔥 THIS FIXES IT
+          image: profile.picture, // Google avatar
         };
       },
     }),

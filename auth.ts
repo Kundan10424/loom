@@ -1,13 +1,10 @@
-import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
+import NextAuth from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
-import authConfig from "./auth.config"
+import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { getAccountByUserId, getUserById } from "@/features/auth/actions";
 
- 
-
- 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   callbacks: {
     /**
@@ -15,11 +12,23 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
      */
     async signIn({ user, account, profile }) {
       if (!user || !account) return false;
-      
+
+      // Get the correct image based on the provider
+      const getProviderImage = () => {
+        if (account.provider === "github") {
+          return profile?.avatar_url || user.image;
+        } else if (account.provider === "google") {
+          return profile?.picture || user.image;
+        }
+        return user.image;
+      };
+
+      const providerImage = getProviderImage();
+
       // Check if the user already exists
       const existingUser = await db.user.findUnique({
         where: { email: user.email! },
-      });      
+      });
 
       // If user does not exist, create a new one
       if (!existingUser) {
@@ -27,8 +36,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           data: {
             email: user.email!,
             name: user.name,
-            image: user.image,
-           
+            image: providerImage,
+
             accounts: {
               // @ts-ignore
               create: {
@@ -78,16 +87,22 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             },
           });
         }
+
+        // Always update the user's image to match the current provider being used
+        await db.user.update({
+          where: { id: existingUser.id },
+          data: { image: providerImage },
+        });
       }
 
       return true;
     },
 
     async jwt({ token, user, account }) {
-      if(!token.sub) return token;
-      const existingUser = await getUserById(token.sub)
+      if (!token.sub) return token;
+      const existingUser = await getUserById(token.sub);
 
-      if(!existingUser) return token;
+      if (!existingUser) return token;
 
       const exisitingAccount = await getAccountByUserId(existingUser.id);
 
@@ -100,20 +115,20 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
     async session({ session, token }) {
       // Attach the user ID from the token to the session
-    if(token.sub  && session.user){
-      session.user.id = token.sub
-    } 
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
 
-    if(token.sub && session.user){
-      session.user.role = token.role
-    }
+      if (token.sub && session.user) {
+        session.user.role = token.role;
+      }
 
-    return session;
+      return session;
     },
   },
-  
+
   secret: process.env.AUTH_SECRET,
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   ...authConfig,
-})
+});

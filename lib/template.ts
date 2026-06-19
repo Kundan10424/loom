@@ -6,14 +6,14 @@ import { Templates } from "@prisma/client";
 
 export const templatePaths: Record<Templates, string> = {
   // Frontend
-  [Templates.REACTJS]: "/loom-starters/react",
-  [Templates.REACT_VITE]: "/loom-starters/bolt-vite-react-ts",
+  [Templates.REACTJS]: "/loom-starters/reactjs",
+  [Templates.REACT_VITE]: "/loom-starters/react-vite",
   [Templates.NEXTJS]: "/loom-starters/nextjs",
-  [Templates.VUE_VITE]: "/loom-starters/vue",
-  [Templates.NUXT]: "/loom-starters/gsap-nuxt",
+  [Templates.VUE_VITE]: "/loom-starters/vue-vite",
+  [Templates.NUXT]: "/loom-starters/nuxt",
   [Templates.ANGULAR]: "/loom-starters/angular",
-  [Templates.SVELTE]: "/loom-starters/gsap-svelte",
-  [Templates.ASTRO]: "/loom-starters/astro-shadcn",
+  [Templates.SVELTE]: "/loom-starters/svelte",
+  [Templates.ASTRO]: "/loom-starters/astro",
 
   // Backend
   [Templates.NODE_EXPRESS]: "/loom-starters/node-express",
@@ -22,26 +22,26 @@ export const templatePaths: Record<Templates, string> = {
   [Templates.NODE_NEST]: "/loom-starters/nest",
 
   // FullStack
-  [Templates.MERN]: "#",
-  [Templates.MEAN]: "#",
-  [Templates.T3_STACK]: "#",
-  [Templates.NEXT_PRISMA]: "#",
+  [Templates.MERN]: "/loom-starters/mern",
+  [Templates.MEAN]: "/loom-starters/mean",
+  [Templates.T3_STACK]: "/loom-starters/t3-stack",
+  [Templates.NEXT_PRISMA]: "/loom-starters/next-prisma",
 
   // Languages
-  [Templates.PYTHON]: "#",
-  [Templates.JAVA]: "#",
-  [Templates.GO]: "#",
-  [Templates.RUST]: "#",
-  [Templates.CPP]: "#",
-  [Templates.C]: "#",
-  [Templates.CSHARP]: "#",
-  [Templates.PHP]: "/loom-starters/php", //ye template load nahi hua hai
-  [Templates.RUBY]: "#",
+  [Templates.PYTHON]: "/loom-starters/python",
+  [Templates.JAVA]: "/loom-starters/java",
+  [Templates.GO]: "/loom-starters/go",
+  [Templates.RUST]: "/loom-starters/rust",
+  [Templates.CPP]: "/loom-starters/cpp",
+  [Templates.C]: "/loom-starters/c",
+  [Templates.CSHARP]: "/loom-starters/csharp",
+  [Templates.PHP]: "/loom-starters/php", 
+  [Templates.RUBY]: "/loom-starters/ruby",
 
   // Dev / Runtime
-  [Templates.DOCKER_NODE]: "#",
-  [Templates.DOCKER_PYTHON]: "#",
-  [Templates.TYPESCRIPT_NODE]: "/loom-starters/typescript",
-  [Templates.BUN_APP]: "#",
-  [Templates.DENO_APP]: "#",
+  [Templates.DOCKER_NODE]: "/loom-starters/docker-node",
+  [Templates.DOCKER_PYTHON]: "/loom-starters/docker-python",
+  [Templates.TYPESCRIPT_NODE]: "/loom-starters/typescript-node",
+  [Templates.BUN_APP]: "/loom-starters/bun-app",
+  [Templates.DENO_APP]: "/loom-starters/deno-app",
 };
