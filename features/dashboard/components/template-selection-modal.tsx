@@ -40,20 +40,6 @@ type TemplateSelectionModalProps = {
   }) => void;
 };
 
-// interface TemplateOption {
-//   id: Templates;
-//   name: string;
-//   description: string;
-//   icon: string;
-//   color: string;
-//   popularity: number;
-//   tags: string[];
-//   features: string[];
-//   category: "Frontend" | "Backend" | "FullStack" | "Language";
-// }
-
-// (your templates array stays EXACTLY same — no change needed)
-
 const TemplateSelectionModal = ({
   isOpen,
   onClose,
@@ -104,29 +90,29 @@ const TemplateSelectionModal = ({
     setStep("select");
   };
 
-const handleCreateProject = () => {
-  if (selectedTemplate) {
-    const template = templates.find((t) => t.id === selectedTemplate);
+  const handleCreateProject = () => {
+    if (selectedTemplate) {
+      const template = templates.find((t) => t.id === selectedTemplate);
 
-    onSubmit({
-      title: projectName || `New ${template?.name} Project`,
-      template: selectedTemplate, // ✅ direct enum (no mapping)
-      description: template?.description,
-    });
+      onSubmit({
+        title: projectName || `New ${template?.name} Project`,
+        template: selectedTemplate, // ✅ direct enum (no mapping)
+        description: template?.description,
+      });
 
-    console.log(
-      `Creating ${projectName || "new project"} with template: ${
-        template?.name
-      }`
-    );
+      console.log(
+        `Creating ${projectName || "new project"} with template: ${
+          template?.name
+        }`,
+      );
 
-    // Reset state
-    onClose();
-    setStep("select");
-    setSelectedTemplate(null);
-    setProjectName("");
-  }
-};
+      // Reset state
+      onClose();
+      setStep("select");
+      setSelectedTemplate(null);
+      setProjectName("");
+    }
+  };
 
   const renderStars = (count: number) => {
     return Array(5)
@@ -213,11 +199,12 @@ const handleCreateProject = () => {
                 onValueChange={handleSelectedTemplate}
               > */}
 
-                <RadioGroup
-                 value={selectedTemplate ?? ""}
-                  onValueChange={(value) => handleSelectedTemplate(value as Templates)}
-                >
-
+              <RadioGroup
+                value={selectedTemplate ?? ""}
+                onValueChange={(value) =>
+                  handleSelectedTemplate(value as Templates)
+                }
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {filteredTemplates.length > 0 ? (
                     filteredTemplates.map((template) => (
@@ -365,6 +352,12 @@ const handleCreateProject = () => {
                   placeholder="My Project"
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleCreateProject();
+                    }
+                  }}
                 />
               </div>
 

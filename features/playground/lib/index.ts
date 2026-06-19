@@ -11,12 +11,12 @@ export function findFilePath(
             if(res) return res;
         } else {
             if(
-                item.fileName=== file.fileName && 
+                item.filename === file.filename && 
                 item.fileExtension === file.fileExtension
             ){
                 return [
                     ...pathSoFar,
-                    item.fileName + (item.fileExtension ? "." + item.fileExtension : ""),
+                    item.filename + (item.fileExtension ? "." + item.fileExtension : ""),
                 ].join('/')
             }
         }
@@ -31,6 +31,6 @@ export const generateFileId = (file: TemplateFile, rootFolder: TemplateFolder): 
     const extensionSuffix = extension ? `.${extension}` : '';
 
     return path
-        ? `${path}/${file.fileName}${extensionSuffix}`
-        : `${file.fileName}${extensionSuffix}`;
+        ? `${path}/${file.filename}${extensionSuffix}`
+        : `${file.filename}${extensionSuffix}`;
 }

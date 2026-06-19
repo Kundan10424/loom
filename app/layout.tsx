@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { FloatingThemeButton } from "@/components/floating-theme-button";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,7 +35,8 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Toaster/>
+            <Toaster />
+            <FloatingThemeButton />
             {children}
           </ThemeProvider>
         </SessionProvider>

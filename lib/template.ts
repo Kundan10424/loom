@@ -22,10 +22,10 @@ export const templatePaths: Record<Templates, string> = {
   [Templates.NODE_NEST]: "/loom-starters/nest",
 
   // FullStack
-  [Templates.MERN]: "#",
-  [Templates.MEAN]: "#",
-  [Templates.T3_STACK]: "#",
-  [Templates.NEXT_PRISMA]: "#",
+  [Templates.MERN]: "/loom-starters/mern",
+  [Templates.MEAN]: "/loom-starters/mean",
+  [Templates.T3_STACK]: "/loom-starters/t3-stack",
+  [Templates.NEXT_PRISMA]: "/loom-starters/next-prisma",
 
   // Languages
   [Templates.PYTHON]: "/loom-starters/python",
