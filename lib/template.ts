@@ -35,13 +35,13 @@ export const templatePaths: Record<Templates, string> = {
   [Templates.CPP]: "/loom-starters/cpp",
   [Templates.C]: "/loom-starters/c",
   [Templates.CSHARP]: "/loom-starters/csharp",
-  [Templates.PHP]: "/loom-starters/php", 
+  [Templates.PHP]: "/loom-starters/php",
   [Templates.RUBY]: "/loom-starters/ruby",
 
   // Dev / Runtime
-  [Templates.DOCKER_NODE]: "/loom-starters/docker-node",
-  [Templates.DOCKER_PYTHON]: "/loom-starters/docker-python",
-  [Templates.TYPESCRIPT_NODE]: "/loom-starters/typescript-node",
-  [Templates.BUN_APP]: "/loom-starters/bun-app",
-  [Templates.DENO_APP]: "/loom-starters/deno-app",
+  [Templates.DOCKER_NODE]: "#",
+  [Templates.DOCKER_PYTHON]: "#",
+  [Templates.TYPESCRIPT_NODE]: "#",
+  [Templates.BUN_APP]: "#",
+  [Templates.DENO_APP]: "#",
 };
