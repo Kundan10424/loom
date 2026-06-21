@@ -36,10 +36,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           data: {
             email: user.email!,
             name: user.name,
+            // Only set the provider image for brand-new users
             image: providerImage,
 
             accounts: {
-              // @ts-ignore
+              // @ts-expect-error - NextAuth provider account typing is incompatible with Prisma adapter here
               create: {
                 type: account.type,
                 provider: account.provider,
@@ -82,24 +83,38 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
               token_type: account.token_type,
               scope: account.scope,
               id_token: account.id_token,
-              // @ts-ignore
+              // @ts-expect-error - session_state comes from provider account typing
               session_state: account.session_state,
             },
           });
         }
 
-        // Always update the user's image to match the current provider being used
-        await db.user.update({
-          where: { id: existingUser.id },
-          data: { image: providerImage },
-        });
+        // IMPORTANT: do NOT overwrite user's edited avatar.
+        // Only set provider image if the DB does not have one yet.
+        if (!existingUser.image && providerImage) {
+          await db.user.update({
+            where: { id: existingUser.id },
+            data: { image: providerImage },
+          });
+        }
       }
 
       return true;
     },
 
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger, session }) {
+      // Handle client-side session updates (useSession().update)
+      if (trigger === "update" && session?.user) {
+        token.name = session.user.name;
+        token.email = session.user.email;
+        token.image = session.user.image;
+        token.role = session.user.role;
+        return token;
+      }
+
       if (!token.sub) return token;
+
+
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
@@ -109,6 +124,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       token.name = existingUser.name;
       token.email = existingUser.email;
       token.role = existingUser.role;
+      token.image = existingUser.image; // <-- ensure image is carried into JWT
 
       return token;
     },
@@ -119,8 +135,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         session.user.id = token.sub;
       }
 
-      if (token.sub && session.user) {
+      if (session.user) {
         session.user.role = token.role;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.image; // <-- ensure image is exposed on session
       }
 
       return session;
