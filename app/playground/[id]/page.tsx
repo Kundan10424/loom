@@ -39,6 +39,9 @@ import {
 import { useEffect, useState } from "react";
 import { TemplateFile } from "@/features/playground/lib/path-to-json";
 import { PlaygroundEditor } from "@/features/playground/components/playground-editor";
+import { useWebContainer } from "@/features/webContainers/hooks/useWebContainers";
+import WebContainerPreview from "@/features/webContainers/components/webcontainer-preview";
+import { LoadingStep } from "@/components/ui/loading-step";
 
 const Page = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,6 +72,15 @@ const Page = () => {
     setOpenFiles,
   } = useFileExplorer();
 
+    const {
+      serverUrl,
+      isLoading: containerLoading,
+      error: containerError,
+      instance,
+      writeFileSync,
+      // @ts-expect-error WebContainer hook typing mismatch for current build
+    } = useWebContainer({ templateData });
+
   useEffect(() => {
     setPlaygroundId(id);
   }, [id, setPlaygroundId]);
@@ -87,6 +99,47 @@ const Page = () => {
   const handleFileSelect = (file: TemplateFile) => {
     openFile(file);
   };
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] p-4">
+        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+        <h2 className="text-xl font-semibold text-red-600 mb-2">
+          Something went wrong
+        </h2>
+        <p className="text-gray-600 mb-4">{error}</p>
+        <Button onClick={() => window.location.reload()} variant="destructive">
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
+    if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] p-4">
+        <div className="w-full max-w-md p-6 rounded-lg shadow-sm border">
+          <h2 className="text-xl font-semibold mb-6 text-center">
+            Loading Playground
+          </h2>
+          <div className="mb-8">
+            <LoadingStep
+              currentStep={1}
+              step={1}
+              label="Loading playground data"
+            />
+            <LoadingStep
+              currentStep={2}
+              step={2}
+              label="Setting up environment"
+            />
+            <LoadingStep currentStep={3} step={3} label="Ready to code" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <TooltipProvider>
@@ -236,43 +289,18 @@ const Page = () => {
                     // direction="horizontal"
                     className="h-full"
                   >
-
                     {/* Agent code from here to */}
                     <ResizablePanel
                       defaultSize={isPreviewVisible ? 50 : 100}
                       className="flex flex-col h-full"
                     >
                       <PlaygroundEditor
-                      activeFile={activeFile}
-                      content={activeFile?.content || ""}
-                      onContentChange={(value)=>activeFileId && updateFileContent(activeFileId, value)}/>
-                      {/* <div className="h-full flex flex-col gap-2 p-4 bg-slate-950 text-slate-100">
-                        <div className="flex items-center justify-between text-sm font-medium">
-                          <span>
-                            {activeFile
-                              ? `${activeFile.filename}.${activeFile.fileExtension}`
-                              : "Editor"}
-                          </span>
-                          {activeFile?.hasUnsavedChanges && (
-                            <span className="text-orange-300">Unsaved</span>
-                          )}
-                        </div>
-                        {activeFile ? (
-                          <textarea
-                            value={activeFile.content}
-                            onChange={(e) =>
-                              activeFileId &&
-                              updateFileContent(activeFileId, e.target.value)
-                            }
-                            className="h-full w-full resize-none rounded-md border border-slate-700 bg-slate-900 p-3 text-xs font-mono text-slate-100 focus:border-slate-500 focus:outline-none"
-                            spellCheck={false}
-                          />
-                        ) : (
-                          <div className="flex-1 rounded-md border border-slate-700 bg-slate-900 p-4 text-sm text-slate-400">
-                            Select a file from the sidebar to start editing.
-                          </div>
-                        )}
-                      </div> */}
+                        activeFile={activeFile}
+                        content={activeFile?.content || ""}
+                        onContentChange={(value) =>
+                          activeFileId && updateFileContent(activeFileId, value)
+                        }
+                      />
                     </ResizablePanel>
 
                     {isPreviewVisible && (
@@ -282,13 +310,15 @@ const Page = () => {
                           defaultSize={50}
                           className="overflow-hidden"
                         >
-                          <div className="h-full flex flex-col p-4 gap-3 bg-slate-950 text-slate-100">
-                            <div className="text-sm font-medium">Preview</div>
-                            <div className="flex-1 overflow-auto rounded-md border border-slate-700 bg-slate-900 p-3 text-xs font-mono whitespace-pre-wrap break-words">
-                              {activeFile?.content ||
-                                "No file content available."}
-                            </div>
-                          </div>
+                          <WebContainerPreview
+                            templateData={templateData!}
+                            instance={instance}
+                            writeFileSync={writeFileSync}
+                            isLoading={containerLoading}
+                            error={containerError}
+                            serverUrl={serverUrl!}
+                            forceResetup={false}
+                          />
                         </ResizablePanel>
                       </>
                     )}
@@ -310,7 +340,7 @@ const Page = () => {
             )}
           </div>
         </SidebarInset>
-      </>
+        </>
     </TooltipProvider>
   );
 };

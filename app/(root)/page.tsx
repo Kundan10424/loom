@@ -16,17 +16,16 @@ export default function Home() {
           Say goodbye to tedious coding tasks and hello to seamless
           productivity. With Loom, you can generate code snippets, get instant
           code suggestions, and automate repetitive coding tasks, all within
-          your favorite code editor. Whether you&apos;re a beginner or an experienced
-          developer, Loom is here to help you code smarter, faster, and more
-          efficiently. Try Loom today and unlock your coding potential!
+          your favorite code editor. Whether you&apos;re a beginner or an
+          experienced developer, Loom is here to help you code smarter, faster,
+          and more efficiently. Try Loom today and unlock your coding potential!
         </p>
 
-        <Link href="/dashboard" >
+        <Link href="/dashboard">
           <Button variant={"brand"} className="mb-4 cursor-pointer" size={"lg"}>
             Get Started
             <SquareArrowUpRight className="ml-2 h-4 w-4" />
           </Button>
-
         </Link>
       </div>
     </div>
