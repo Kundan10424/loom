@@ -118,57 +118,61 @@ const TemplateFileTree = ({
             </DropdownMenuPortal>
           </DropdownMenu>
 
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {isRootFolder ? (
-                (data as TemplateFolder).items.map((child, index) => (
-                  <TemplateNode
-                    key={index}
-                    item={child}
-                    onFileSelect={onFileSelect}
-                    selectedFile={selectedFile}
-                    level={0}
-                    path=""
-                    onAddFile={onAddFile}
-                    onAddFolder={onAddFolder}
-                    onDeleteFile={onDeleteFile}
-                    onDeleteFolder={onDeleteFolder}
-                    onRenameFile={onRenameFile}
-                    onRenameFolder={onRenameFolder}
-                  />
-                ))
-              ) : (
-                <TemplateNode
-                  item={data}
-                  onFileSelect={onFileSelect}
-                  selectedFile={selectedFile}
-                  level={0}
-                  path=""
-                  onAddFile={onAddFile}
-                  onAddFolder={onAddFolder}
-                  onDeleteFile={onDeleteFile}
-                  onDeleteFolder={onDeleteFolder}
-                  onRenameFile={onRenameFile}
-                  onRenameFolder={onRenameFolder}
-                />
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarRail/>
-      <NewFileDialog
-        isOpen={isNewFileDialogOpen}
-        onClose={()=>{setIsNewFileDialogOpen(false)}}
-        onCreateFile={()=>{}}
-      />
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {isRootFolder ? (
+                      (data as TemplateFolder).items.map((child, index) => (
+                        <TemplateNode
+                          key={index}
+                          item={child}
+                          onFileSelect={onFileSelect}
+                          selectedFile={selectedFile}
+                          level={0}
+                          path=""
+                          onAddFile={onAddFile}
+                          onAddFolder={onAddFolder}
+                          onDeleteFile={onDeleteFile}
+                          onDeleteFolder={onDeleteFolder}
+                          onRenameFile={onRenameFile}
+                          onRenameFolder={onRenameFolder}
+                        />
+                      ))
+                    ) : (
+                      <TemplateNode
+                        item={data}
+                        onFileSelect={onFileSelect}
+                        selectedFile={selectedFile}
+                        level={0}
+                        path=""
+                        onAddFile={onAddFile}
+                        onAddFolder={onAddFolder}
+                        onDeleteFile={onDeleteFile}
+                        onDeleteFolder={onDeleteFolder}
+                        onRenameFile={onRenameFile}
+                        onRenameFolder={onRenameFolder}
+                      />
+                    )}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+            <SidebarRail />
+            <NewFileDialog
+              isOpen={isNewFileDialogOpen}
+              onClose={() => {
+                setIsNewFileDialogOpen(false);
+              }}
+              onCreateFile={() => {}}
+            />
 
-      <NewFolderDialog
-        isOpen={isNewFolderDialogOpen}
-        onClose={()=>{setIsNewFolderDialogOpen(false)}}
-        onCreateFolder={()=>{}}
-      />
-    </Sidebar>
+            <NewFolderDialog
+              isOpen={isNewFolderDialogOpen}
+              onClose={() => {
+                setIsNewFolderDialogOpen(false);
+              }}
+              onCreateFolder={() => {}}
+            />
+          </Sidebar>
   );
 };
 

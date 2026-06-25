@@ -31,7 +31,7 @@ export const LoadingStep: React.FC<LoadingStepProps> = ({
           />
         </svg>
       ) : currentStep === step ? (
-        <Loader2 className="h-4 w-4 text-red-500 animate-spin" />
+        <Loader2 className="h-4 w-4 text-indigo-600 animate-spin" />
       ) : (
         <div className="h-4 w-4 rounded-full bg-gray-300" />
       )}
@@ -39,7 +39,7 @@ export const LoadingStep: React.FC<LoadingStepProps> = ({
     <span
       className={`text-sm ${
         currentStep === step
-          ? "text-red-600 font-medium"
+          ? "text-center bg-clip-text text-transparent bg-linear-to-r from-violet-500 via-indigo-500 to-blue-500 dark:from-violet-600 dark:via-indigo-600 dark:to-blue-600"
           : currentStep > step
             ? "text-green-600"
             : "text-gray-500"
